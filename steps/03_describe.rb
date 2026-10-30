@@ -27,7 +27,9 @@ SYSTEM = <<~PROMPT
 PROMPT
 
 def start(task)                                  # the job, then the task
-  [{ role: "system", content: SYSTEM }, { role: "user", content: task }]
+  files = list_files({}).split.join(", ")        # step 2: what's here now
+  [{ role: "system", content: "#{SYSTEM}Files in the folder: #{files}" },
+   { role: "user", content: task }]
 end
 
 if $PROGRAM_NAME == __FILE__

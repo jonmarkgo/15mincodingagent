@@ -11,6 +11,6 @@ puts "It says: #{claim}\n\n"
 
 output, status = Open3.capture2e("ruby", "greet.rb", chdir: WORKSPACE)
 puts "Really:  #{output.lines.first}"               # what actually happens
-if !status.success? && claim !~ /error|can.?t|cannot/i
+if !status.success? && claim !~ /error|can.?t|cannot|access/i
   puts "\nIt never ran greet.rb. It made that up."
 end

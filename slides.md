@@ -130,7 +130,7 @@ A **statistical predictor of text.** Given the words so far, it picks a likely n
 <!-- stop -->
 
 - It learned those odds from a huge amount of text and code
-- The odds live in billions of numbers: the **weights** (here, an 81 GB file)
+- The odds live in billions of numbers: the **weights** (here, a 7.7 GB file)
 - **Text in, text out.** That's the whole interface.
 
 ---
@@ -140,11 +140,11 @@ A **statistical predictor of text.** Given the words so far, it picks a likely n
 | | Claude, Gemini, GPT | Open weights, on your laptop |
 | --- | --- | --- |
 | Where it runs | Their servers | Your machine |
-| What you get | Answers, over the internet | The model itself: a file (this one is 81 GB) |
+| What you get | Answers, online | The model itself: a 7.7 GB file |
 | Account, internet | Required | Neither |
 | Cost | Pay per token | Your electricity |
 | Your data | Leaves your machine | Stays put |
-| Open it up, change it | No | Yes: inspect it, fine-tune it, build on it |
+| Open it up, change it | No | Yes: inspect, tune, build on it |
 | Smartest today | Yes | Close behind |
 
 <!-- stop -->
@@ -244,7 +244,7 @@ lines:
 
 # Your turn: run it
 
-DeepSeek V4 Flash: 284B parameters, MIT license, wifi still off.
+Gemma 4 12B: open weights from Google, Apache 2.0, wifi still off.
 
 ```terminal-ex
 command: bash --rcfile steps/stage.bashrc -i
@@ -289,7 +289,7 @@ init_wait: '$ '
 init_codeblock: false
 ```
 
-That's a **hallucination**. **To do things, it needs tools.**
+It can't open a file or run a thing. **To do things, it needs tools.**
 
 ---
 
@@ -357,14 +357,15 @@ lines:
 
 # How does it understand tools?
 
-It doesn't, the way Ruby does. **Tools become more text in its prompt.** ds4 adds this:
+It doesn't, the way Ruby does. **Tools become more text in its prompt.** Ollama adds this:
 
 ```
- ## Tools
- You have access to a set of tools to help answer the user question.
- You can invoke tools by writing a "<|DSML|tool_calls>" block ...
- ### Available Tool Schemas
- {"name": "read_file", "description": "Read a file", ...}   ← TOOL_SPECS
+ <|turn>system
+ You are a coding agent working in a folder. ...
+ <|tool>declaration:read_file{description:<|"|>Read a file<|"|>,
+   parameters:{properties:{path:{type:<|"|>STRING<|"|>}},...}<tool|>
+ <|turn>user
+ Read greet.rb<turn|>                          ↑ that's TOOL_SPECS
 ```
 
 <!-- stop -->
@@ -372,16 +373,12 @@ It doesn't, the way Ruby does. **Tools become more text in its prompt.** ds4 add
 And the model writes back plain text, in that format:
 
 ```
- <|DSML|tool_calls>
- <|DSML|invoke name="read_file">
- <|DSML|parameter name="path" string="true">greet.rb</|DSML|parameter>
- </|DSML|invoke>
- </|DSML|tool_calls>
+ <|tool_call>call:read_file{path:<|"|>greet.rb<|"|>}<tool_call|>
 ```
 
 <!-- stop -->
 
-It learned that format from huge numbers of examples, so **a tool call is just the most likely next text.** ds4 spots it and hands Ruby the JSON.
+It learned that format from huge numbers of examples, so **a tool call is just the most likely next text.** Ollama spots it and hands Ruby the JSON.
 
 ---
 
@@ -412,7 +409,7 @@ relative: true
 lang: ruby
 lines:
   start: 20
-  end: 30
+  end: 32
 ```
 
 ---
@@ -426,8 +423,8 @@ path: steps/03_describe.rb
 relative: true
 lang: ruby
 lines:
-  start: 31
-  end: 37
+  start: 33
+  end: 39
 ```
 
 ```terminal-ex
@@ -703,7 +700,7 @@ Far fewer people can build the things that build apps: **the tools, the systems,
 
 - Next: Hastimal shows you **Gemma 4** running on your own laptop
 <!-- stop -->
-- Point this agent at it: `LLM_URL=http://localhost:11434/v1 LLM_MODEL=gemma4`
+- This agent already runs on it: `ollama pull gemma4:12b-mlx`
 <!-- stop -->
 - Give it a new tool: **search the web docs**, **run the linter**, **take a screenshot**
 <!-- stop -->

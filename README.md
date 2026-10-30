@@ -10,9 +10,9 @@ back until the job is done. Each step is one small file that adds one idea.
 
 You need Ruby 3.1+ and [Ollama](https://ollama.com).
 
-    ollama pull gemma4:e4b           # a laptop-sized Gemma 4; any chat model works
-    export LLM_URL=http://localhost:11434/v1
-    export LLM_MODEL=gemma4:e4b
+    ollama pull gemma4:12b-mlx       # Gemma 4 12B, built for Apple silicon (7.7 GB), the default
+    # Not on a Mac, or short on memory? Any Gemma 4 works:
+    #   ollama pull gemma4:e4b && export LLM_MODEL=gemma4:e4b
 
     ruby steps/01_ask.rb "What is Hacktoberfest?"
     ruby steps/06_loop.rb "Run greet.rb and fix it if it's broken."
@@ -59,9 +59,9 @@ OpenAI-compatible server works.
 
 ## Options
 
-- Any OpenAI-compatible server works. The talk ran on [ds4](https://github.com/antirez/ds4)
-  serving DeepSeek V4 Flash (284B parameters, MIT license) on a 128 GB MacBook:
-  `./ds4-server --ctx 32768`, which is the default `LLM_URL`.
+- Any OpenAI-compatible server works: set `LLM_URL` (default `http://localhost:11434/v1`,
+  Ollama) and `LLM_MODEL` (default `gemma4:12b-mlx`). The talk ran this on a MacBook with
+  the wifi off.
 
 ## Presenting the talk
 
