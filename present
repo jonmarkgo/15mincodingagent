@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# present: run the lookatme deck. The extensions turn on the embedded terminals and file snippets.
+cd "$(dirname "$0")"
+export BASH_SILENCE_DEPRECATION_WARNING=1
+ruby -r ./steps/02_tools.rb -e reset_workspace   # fresh demo folder: a leap-year bug + one skill
+exec lookatme -e terminal,file_loader slides.md "$@"
