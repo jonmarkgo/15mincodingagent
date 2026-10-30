@@ -734,10 +734,3 @@ Not counting pull requests. **Building in the open.**
    ██████████████████
 ```
 
----
-
-# Don't just use it. Build it.
-
-AI belongs to everyone. **Including your laptop.**
-
-**github.com/jonmarkgo/15mincodingagent**
